@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Data Analytics &amp; Machine Learing</title>
+    <link href="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/feed.xml" rel="self" />
+    <link href="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview" />
+    <updated>2018-07-29T13:54:26-07:00</updated>
+    <author>
+        <name>Amit Kumar Shankar</name>
+    </author>
+    <id>file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview</id>
+
+    <entry>
+        <title>Second Project.</title>
+        <author>
+            <name>Amit Kumar Shankar</name>
+        </author>
+        <link href="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/Second-Project..html"/>
+        <id>file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/Second-Project..html</id>
+
+        <updated>2018-07-29T13:52:46-07:00</updated>
+            <summary></summary>
+        <content type="html">
+            <![CDATA[
+                    <img src="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/media/posts/2/" alt="" />
+                THis is second project.
+            ]]>
+        </content>
+    </entry>
+    <entry>
+        <title>First Project</title>
+        <author>
+            <name>Amit Kumar Shankar</name>
+        </author>
+        <link href="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/first-project.html"/>
+        <id>file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/first-project.html</id>
+
+        <updated>2018-07-29T13:52:23-07:00</updated>
+            <summary></summary>
+        <content type="html">
+            <![CDATA[
+                    <img src="file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/media/posts/1/" alt="" />
+                This is the first project
+            ]]>
+        </content>
+    </entry>
+</feed>

@@ -1,0 +1,41 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Data Analytics &amp; Machine Learing",
+    "description": "",
+    "home_page_url": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview",
+    "feed_url": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/feed.json",
+    "user_comment": "",
+    "author": {
+        "name": "Amit Kumar Shankar"
+    },
+    "items": [
+        {
+            "id": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/Second-Project..html",
+            "url": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/Second-Project..html",
+            "title": "Second Project.",
+            "content_html": "THis is second project.",
+            "image": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/media/posts/2/",
+            "author": {
+                "name": "Amit Kumar Shankar"
+            },
+            "tags": [
+            ],
+            "date_published": "2018-07-29T13:52:46-07:00",
+            "date_modified": "2018-07-29T13:52:46-07:00"
+        },
+        {
+            "id": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/first-project.html",
+            "url": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/first-project.html",
+            "title": "First Project",
+            "content_html": "This is the first project",
+            "image": "file://D:\data_analysis\web_site_git\actaul_files\data-analytics-and-machine-learing\preview/media/posts/1/",
+            "author": {
+                "name": "Amit Kumar Shankar"
+            },
+            "tags": [
+            ],
+            "date_published": "2018-07-29T13:52:23-07:00",
+            "date_modified": "2018-07-29T13:52:23-07:00"
+        }
+    ]
+}
