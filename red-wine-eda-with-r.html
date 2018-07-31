@@ -4,7 +4,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>"Red Wine EDA with R" &mdash; All Things Data</title>
+  <title>Red Wine EDA with R &mdash; All Things Data</title>
   <meta name="author" content="Amit Kumar Shankar">
 
 
@@ -47,14 +47,13 @@
 <div>
   <article class="hentry" role="article">
 <header>
-      <h1 class="entry-title">"Red Wine EDA with R"</h1>
+      <h1 class="entry-title">Red Wine EDA with R</h1>
     <p class="meta">
 <time datetime="2018-07-26T00:00:00+02:00" pubdate>Thu 26 July 2018</time>    </p>
 </header>
 
-  <div class="entry-content"><p>and this is my post summary.and this is my post summary.and this is my post summary.and this is my post summary.and this is my post summary.
-and this is my post summary.and this is my post summary.and this is my post summary.and this is my post summary.and this is my post summary.
-and this is my post summary.and this is my post summary.and this is my post summary.</p>
+  <div class="entry-content"><p>of the data analysis nanodegree program. The rmarkdown file of the actual scripts, the html 
+file of the renderings and the data set is in the github repo <a href="https://google.com/">link</a>.</p>
 <div class="highlight"><pre><span></span>## Red Wine Data Table - Wide Format
 </pre></div>
 
@@ -544,12 +543,12 @@ https://stackoverflow.com/questions/10014187/displaying-text-below-the-plot-gene
 </pre></div>
 
 
-<p><img alt="plot of chunk Basic_Summary_Statistics" src="images/redwine_eda_Basic_Summary_Statistics-1.png"></p>
+<p><img alt="plot of chunk Basic_Summary_Statistics" src="images/redwine_eda/Basic_Summary_Statistics-1.png"></p>
 <p>The dataset contains numeric variables. The outcome variable - quality,<br>
 contains integers between 0 to 10 and this can later be categorized if needed. 
 There are also no missing values in the dataset.</p>
 <h2>What is/are the main feature(s) of interest in your dataset?</h2>
-<p><img alt="plot of chunk unnamed-chunk-1" src="images/redwine_eda_unnamed-chunk-1-1.png"><img alt="plot of chunk unnamed-chunk-1" src="images/redwine_eda_unnamed-chunk-1-2.png"></p>
+<p><img alt="plot of chunk unnamed-chunk-1" src="images/redwine_eda/unnamed-chunk-1-1.png"><img alt="plot of chunk unnamed-chunk-1" src="images/redwine_eda/unnamed-chunk-1-2.png"></p>
 <p>Density and pH have a fairly normal distribution. 
 Other attributes with long tails could be shortened by transformation
 for easier modeling in future.</p>
@@ -557,7 +556,7 @@ for easier modeling in future.</p>
 total.sulfur.dioxide and volatile.acidity.</p>
 <p>Features of interest are volatile.acidity, citric.acid, pH and alcohol content.
 There relationship with quality will be further explored in bivariate section.</p>
-<p><img alt="plot of chunk quality_plots" src="images/redwine_eda_quality_plots-1.png"></p>
+<p><img alt="plot of chunk quality_plots" src="images/redwine_eda/quality_plots-1.png"></p>
 <div class="highlight"><pre><span></span>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   3.000   5.000   6.000   5.636   6.000   8.000
 </pre></div>
@@ -584,7 +583,7 @@ explore any relationships between the new variable and quality. This will be
 further explored in the bivariate section.</p>
 <h1>Bivariate Analysis</h1>
 <h2>Relationships between new variable and quality score</h2>
-<p><img alt="plot of chunk alcohol_sugar_plots" src="images/redwine_eda_alcohol_sugar_plots-1.png"></p>
+<p><img alt="plot of chunk alcohol_sugar_plots" src="images/redwine_eda/alcohol_sugar_plots-1.png"></p>
 <div class="highlight"><pre><span></span>## df$quality: 3
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   11.76   17.71   20.09   26.62   33.77   58.14 
@@ -614,7 +613,7 @@ further explored in the bivariate section.</p>
 <p>The quality score gets better as median increase. Also, the quality score gets
 somewhat better as mean increases.</p>
 <h2>Boxplots between independant variables and quality score</h2>
-<p><img alt="plot of chunk unnamed-chunk-2" src="images/redwine_eda_unnamed-chunk-2-1.png"></p>
+<p><img alt="plot of chunk unnamed-chunk-2" src="images/redwine_eda/unnamed-chunk-2-1.png"></p>
 <p>The boxplot indicates the following relationships for:<br> 
 volatile.acidity: lower acidity levels could have a better quality score <br> 
 citric.acid: slightly higher levels could have better quality score <br>
@@ -624,9 +623,9 @@ alcohol: higher alcohol levels could have better quality score <br> </p>
 <p>The graphs below explore features of interest such as volatile.acidity, 
 citric.acid, alcohol and pH content with quality score as outlined in the
 univariate section.</p>
-<p><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda_univariate_box_plots-1.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda_univariate_box_plots-2.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda_univariate_box_plots-3.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda_univariate_box_plots-4.png"></p>
+<p><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda/univariate_box_plots-1.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda/univariate_box_plots-2.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda/univariate_box_plots-3.png"><img alt="plot of chunk univariate_box_plots" src="images/redwine_eda/univariate_box_plots-4.png"></p>
 <h2>Correlation Heatmap</h2>
-<p><img alt="plot of chunk correlation_plot" src="images/redwine_eda_correlation_plot-1.png"></p>
+<p><img alt="plot of chunk correlation_plot" src="images/redwine_eda/correlation_plot-1.png"></p>
 <p>The Pairwise Correlation heatmap indicates very strong positive correlation 
 between alcohol_sugar and residual.sugar. One reason for the strong correlation
 could be that alcohol_sugar is a new variable that was derived by multiplying
@@ -636,23 +635,23 @@ alchol and residual.sugar.</p>
 a. relationship between pH and fixed.acidity (inverse relationship)<br>
 b. relationship between citric.acid and fixed.acidity (direct relationship)<br></p>
 <h3>Exploring the relationship between pH vs fixed.acidity</h3>
-<p><img alt="plot of chunk pH_vs_fixed_acidity" src="images/redwine_eda_pH_vs_fixed_acidity-1.png"></p>
+<p><img alt="plot of chunk pH_vs_fixed_acidity" src="images/redwine_eda/pH_vs_fixed_acidity-1.png"></p>
 <p>It can be observed from the Fixed.acidity vs pH scatter plot that
 pH and fixed.acidity are inversely related.</p>
 <h3>Exploring the relationship between citrix.acid vs fixed.acidity</h3>
-<p><img alt="plot of chunk citric_acid_vs_fixed_acidity" src="images/redwine_eda_citric_acid_vs_fixed_acidity-1.png"></p>
+<p><img alt="plot of chunk citric_acid_vs_fixed_acidity" src="images/redwine_eda/citric_acid_vs_fixed_acidity-1.png"></p>
 <p>The citric.acid vs fixed.acidity plot shows a direct relationship between 
 concentrations of fixed.acidity and citric.acid.</p>
 <h1>Multivariate Analysis</h1>
 <p>Exploring the relationship between residual.sugar, alcohol and quality.
 Could sweet wine with high alcohol content have higher quality score?</p>
-<p><img alt="plot of chunk sugar_alcohol_quality" src="images/redwine_eda_sugar_alcohol_quality-1.png"></p>
+<p><img alt="plot of chunk sugar_alcohol_quality" src="images/redwine_eda/sugar_alcohol_quality-1.png"></p>
 <p>It can be seen that residual sugar of less than 5, alcohol percent of 10 or 
 higher get better quality rating. This means that a wine that is not sweet but
 has a higher alcohol content gets a favorably higher rating.</p>
 <h1>Final Plots and Summary</h1>
 <h2>Transformation Plots</h2>
-<p><img alt="plot of chunk transformation_plots" src="images/redwine_eda_transformation_plots-1.png"></p>
+<p><img alt="plot of chunk transformation_plots" src="images/redwine_eda/transformation_plots-1.png"></p>
 <p>Log10 transformation of total.sulfur.dioxide variable is effective in 
 normalizing the distribution for future modeling.</p>
 <h2>Effect of pH on red wine quality</h2>
@@ -682,12 +681,12 @@ normalizing the distribution for future modeling.</p>
 </pre></div>
 
 
-<p><img alt="plot of chunk pH_plots" src="images/redwine_eda_pH_plots-1.png"></p>
+<p><img alt="plot of chunk pH_plots" src="images/redwine_eda/pH_plots-1.png"></p>
 <p>The pH is based on a log 10 scale.It can be seen that wines with pH less than
 3.3 have a higher quality score. THis means, acidic wines have better quality
 score.</p>
 <h2>Relationship between citric_acid and fixed_acidity</h2>
-<p><img alt="plot of chunk citric_acid_vs_fixed_acidity_v1" src="images/redwine_eda_citric_acid_vs_fixed_acidity_v1-1.png"></p>
+<p><img alt="plot of chunk citric_acid_vs_fixed_acidity_v1" src="images/redwine_eda/citric_acid_vs_fixed_acidity_v1-1.png"></p>
 <p>A direct relationship can be observed between critic.acid and fixed.acidity.
 This makes sense as higher concentration of citric.acid could increase the
 fixed.acidity concentration, making the red wine more wine more acidic.</p>
@@ -741,7 +740,7 @@ the dataset.</p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="/red-wine-eda-with-r.html">"Red Wine EDA with R"</a>
+          <a href="/red-wine-eda-with-r.html">Red Wine EDA with R</a>
       </li>
       <li class="post">
           <a href="/my-second-post.html">My Second Post</a>
