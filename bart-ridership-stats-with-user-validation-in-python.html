@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Bart Ridership Stats with User Validation in Python &mdash; All Things Data</title>
+  <meta name="author" content="Amit Kumar Shankar">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="/favicon.png" rel="icon">
+
+  <link href="/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="/">All Things Data</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+    <li><a href="https://amitshankar.github.io">Home</a></li>
+    <li><a href="/pages/about-me.html">About Me</a></li>
+    <li><a href="https://github.com/amitshankar">GitHub Repo</a></li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Bart Ridership Stats with User Validation in Python</h1>
+    <p class="meta">
+<time datetime="2018-04-05T00:00:00+02:00" pubdate>Thu 05 April 2018</time>    </p>
+</header>
+
+  <div class="entry-content"><p>The dataset for the project is located <a href="https://github.com/amitshankar/Udacity/tree/master/Data_Analyst_Nanodegree/Term_01/Project_02/datasets">here</a> and python script that interacts with the data is called final.py located <a href="https://github.com/amitshankar/Udacity/tree/master/Data_Analyst_Nanodegree/Term_01/Project_02">here</a>.</p>
+<h1>Resources</h1>
+<p>https://stackoverflow.com/questions/1801668/convert-a-python-list-with-strings-all-to-lowercase-or-uppercase
+https://stackoverflow.com/questions/29403192/convert-series-returned-by-pandas-series-value-counts-to-a-dictionary
+https://bytes.com/topic/python/answers/794376-printing-contents-list-one-line
+https://stackoverflow.com/questions/483666/python-reverse-invert-a-mapping
+https://stackoverflow.com/questions/13411544/delete-column-from-pandas-dataframe-using-python-del</p>
+<h1>Improvements from suggestions from first submission:</h1>
+<ol>
+<li>Reading only one file instead of all the files into memory.  </li>
+<li>Included a display function to display 5 lines at a time.  </li>
+<li>Not throwing an error when user enters ChiCAgo instead of Chicago.  </li>
+<li>For gender and birth calculations, checking the column names.  </li>
+</ol>
+<h1>Statistics Computed</h1>
+<h2>1 Popular times of travel (i.e., occurs most often in the start time)</h2>
+<p>most common month<br>
+most common day of week<br>
+most common hour of day  </p>
+<h2>2 Popular stations and trip</h2>
+<p>most common start station<br>
+most common end station<br>
+most common trip from start to end (i.e., most frequent combination of start station and end station)  </p>
+<h2>3 Trip duration</h2>
+<p>total travel time<br>
+average travel time  </p>
+<h2>4 User info</h2>
+<p>counts of each user type<br>
+counts of each gender (only available for NYC and Chicago)<br>
+earliest, most recent, most common year of birth (only available for NYC and Chicago)  </p>
+<h2>The following are the codes for the projgect:</h2>
+<div class="highlight"><pre><span></span><span class="c1"># coding: utf-8</span>
+
+<span class="c1"># In[1]:</span>
+
+
+<span class="c1">#import packages</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># In[2]:</span>
+
+
+<span class="c1">#df -means data frame</span>
+
+<span class="k">def</span> <span class="nf">data_stats</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    This is a helper function to get a better understanding of each dataframe such as </span>
+<span class="sd">    the data types, number of rows of data, missing values etc.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="kp">info</span><span class="p">())</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+<span class="k">def</span> <span class="nf">reading_file</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: Receives the correct location name.</span>
+<span class="sd">    Process: Reads the csv file into a data frame corresponding to the location.</span>
+<span class="sd">    Ouput: Returns the data frame.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">city_data</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;chicago&#39;</span><span class="p">:</span> <span class="s1">&#39;datasets/chicago.csv&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;new york&#39;</span><span class="p">:</span> <span class="s1">&#39;datasets/new_york_city.csv&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;washington&#39;</span><span class="p">:</span> <span class="s1">&#39;datasets/washington.csv&#39;</span> <span class="p">}</span>
+    <span class="n">filename</span><span class="o">=</span><span class="n">city_data</span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Location&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">location</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">clean_files</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The function receives a dataframe, drops the first column and </span>
+<span class="sd">    converts the Start Time and End Time columns in to pandas date time format and returns that dataframe</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1">#drop first column</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Unnamed: 0&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c1">#make start time and end time to data time format</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Time&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Time&#39;</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;End Time&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;End Time&#39;</span><span class="p">])</span>
+
+    <span class="c1">#add hour column to dataframe</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+
+    <span class="c1">#add week day column containing weekday name</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;week_day&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday_name</span>
+
+    <span class="c1">#add month column containing month name</span>
+    <span class="n">calender</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s1">&#39;January&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s1">&#39;February&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">:</span><span class="s1">&#39;March&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">:</span><span class="s1">&#39;April&#39;</span><span class="p">,</span><span class="mi">5</span><span class="p">:</span><span class="s1">&#39;May&#39;</span><span class="p">,</span><span class="mi">6</span><span class="p">:</span><span class="s1">&#39;June&#39;</span><span class="p">}</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">calender</span><span class="p">)</span> <span class="c1">#month number to name</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">validate_user_input</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="n">possible_values</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: Receives the input value and possible values.</span>
+<span class="sd">    Process:This function compares what the user entered against possible values and asks the user to enter the one of the possible values.</span>
+<span class="sd">    Output: Returns the correct value in lower case.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">value_lower_case</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="c1">#lower case the values for easy comparison</span>
+    <span class="n">possible_values_lower_case</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">possible_values</span><span class="p">]</span>
+    <span class="n">exit_loop</span><span class="o">=</span><span class="bp">True</span>
+    <span class="k">while</span> <span class="n">exit_loop</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value_lower_case</span> <span class="ow">in</span> <span class="n">possible_values_lower_case</span><span class="p">:</span> 
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Thanks for choosing {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value_lower_case</span><span class="o">.</span><span class="n">title</span><span class="p">()))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">correct_value</span><span class="o">=</span><span class="n">value_lower_case</span>
+            <span class="n">exit_loop</span><span class="o">=</span><span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;The valid options are from the following {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">possible_values</span><span class="p">))</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please enter the valid option as stated above:&#39;</span><span class="p">)</span> <span class="c1">######</span>
+            <span class="n">value_lower_case</span><span class="o">=</span><span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">correct_value</span> <span class="c1">#always lower case</span>
+
+
+
+<span class="k">def</span> <span class="nf">get_location</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Process:This function gets asks the user for the location and validates user input</span>
+<span class="sd">    Output: Returns the correct location</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">location_value</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Would you like to see data for Chicago, New York, or Washington? &#39;</span><span class="p">)</span>
+    <span class="n">location_possible_values</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Chicago&#39;</span><span class="p">,</span><span class="s1">&#39;New York&#39;</span><span class="p">,</span><span class="s1">&#39;Washington&#39;</span><span class="p">]</span>
+    <span class="n">correct_location</span><span class="o">=</span><span class="n">validate_user_input</span><span class="p">(</span><span class="n">location_value</span><span class="p">,</span><span class="n">location_possible_values</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">correct_location</span>
+
+<span class="k">def</span> <span class="nf">get_day</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: None</span>
+<span class="sd">    Process: The function gives user the option to filter data by day.</span>
+<span class="sd">    If the user chooses to filter the data by day, then user is presented with the next option to </span>
+<span class="sd">    choose a specific day.</span>
+<span class="sd">    Output: The function returns the correct day</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">day_input</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Would you like to filter the data by day (Yes or No): &#39;</span><span class="p">)</span>
+    <span class="n">day_possible_input</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span><span class="s1">&#39;No&#39;</span><span class="p">]</span>
+    <span class="n">correct_day_input</span><span class="o">=</span><span class="n">validate_user_input</span><span class="p">(</span><span class="n">day_input</span><span class="p">,</span><span class="n">day_possible_input</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">correct_day_input</span><span class="o">==</span><span class="s1">&#39;yes&#39;</span><span class="p">:</span>
+        <span class="n">day_name</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please enter any of the following days: Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday: &#39;</span><span class="p">)</span>
+        <span class="n">day_possible_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span><span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span><span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span><span class="s1">&#39;Thursday&#39;</span><span class="p">,</span><span class="s1">&#39;Friday&#39;</span><span class="p">,</span><span class="s1">&#39;Saturday&#39;</span><span class="p">,</span><span class="s1">&#39;Sunday&#39;</span><span class="p">]</span>
+        <span class="n">correct_day_name</span><span class="o">=</span><span class="n">validate_user_input</span><span class="p">(</span><span class="n">day_name</span><span class="p">,</span><span class="n">day_possible_names</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">correct_day_name</span><span class="o">.</span><span class="n">title</span><span class="p">())</span> <span class="c1">#capitalize first letter so consistant with day names in data frame</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">correct_day_input</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_month</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: None</span>
+<span class="sd">    Process: This function will give user the option to sort the data by month.</span>
+<span class="sd">    If user chooses yes, then user is presented with the options to choose the month</span>
+<span class="sd">    Output: Returns the correct month chosen by the user</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">month_input</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Would you like to filter the data by month (Yes or No): &#39;</span><span class="p">)</span>
+    <span class="n">month_possible_input</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Yes&#39;</span><span class="p">,</span><span class="s1">&#39;No&#39;</span><span class="p">]</span>
+    <span class="n">correct_month_input</span><span class="o">=</span><span class="n">validate_user_input</span><span class="p">(</span><span class="n">month_input</span><span class="p">,</span><span class="n">month_possible_input</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">correct_month_input</span><span class="o">==</span><span class="s1">&#39;yes&#39;</span><span class="p">:</span>
+        <span class="n">month_name</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Please enter any of the following months: Januay,February,March,April,May,June: &#39;</span><span class="p">)</span>
+        <span class="n">month_possible_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;January&#39;</span><span class="p">,</span><span class="s1">&#39;February&#39;</span><span class="p">,</span><span class="s1">&#39;March&#39;</span><span class="p">,</span><span class="s1">&#39;April&#39;</span><span class="p">,</span><span class="s1">&#39;May&#39;</span><span class="p">,</span><span class="s1">&#39;June&#39;</span><span class="p">]</span>
+        <span class="n">correct_month_name</span><span class="o">=</span><span class="n">validate_user_input</span><span class="p">(</span><span class="n">month_name</span><span class="p">,</span><span class="n">month_possible_names</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">correct_month_name</span><span class="o">.</span><span class="n">title</span><span class="p">())</span> <span class="c1">#capitalize the first letter so consistant with months in data frame</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">correct_month_input</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load_filter_data</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input:None</span>
+<span class="sd">    Process: This function will use sub functions to get inputs from the user such as location, month and day.</span>
+<span class="sd">    It also validates user input so correct options are chose. It then filters the data based on user selecton.</span>
+<span class="sd">    Output: Returns the filtered dataframe.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">location_filter</span><span class="o">=</span><span class="n">get_location</span><span class="p">()</span> <span class="c1"># get location</span>
+    <span class="n">month_filter</span><span class="o">=</span><span class="n">get_month</span><span class="p">()</span> <span class="c1">#get month</span>
+    <span class="n">day_filter</span><span class="o">=</span><span class="n">get_day</span><span class="p">()</span> <span class="c1">#get day</span>
+
+    <span class="c1">#filter by location</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">reading_file</span><span class="p">(</span><span class="n">location_filter</span><span class="p">)</span> <span class="c1">#read file</span>
+    <span class="n">df</span><span class="o">=</span><span class="n">clean_files</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="c1">#clean file</span>
+
+    <span class="c1">#filter data by month</span>
+    <span class="k">if</span> <span class="n">month_filter</span><span class="o">!=</span><span class="s1">&#39;no&#39;</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">month</span><span class="o">==</span><span class="n">month_filter</span><span class="p">]</span>
+
+    <span class="c1">#filter data by day name</span>
+    <span class="k">if</span> <span class="n">day_filter</span><span class="o">!=</span><span class="s1">&#39;no&#39;</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">week_day</span><span class="o">==</span><span class="n">day_filter</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<span class="k">def</span> <span class="nf">calculate_stats</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: The function receives a clean dataframe.</span>
+<span class="sd">    Process: The function calculates all the statistics required for the project and instead of printing to</span>
+<span class="sd">    screen, it appends it to a output list.</span>
+<span class="sd">    Output: The function returns a list containing all statistics.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">output</span><span class="o">=</span><span class="p">[]</span><span class="c1">#declare a list to save all outputs</span>
+    <span class="n">location</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">Location</span><span class="o">.</span><span class="kp">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1">#popular travel times</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common hour is {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">hour</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common day of week is {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">week_day</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common month is {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+
+    <span class="c1">#popular stations</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common start station is {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common end station is {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;End Station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start End Station&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start Station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;End Station&#39;</span><span class="p">],</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; to &#39;</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, most common start to end station is {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Start End Station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()))</span>
+
+    <span class="c1">#trip durations</span>
+    <span class="n">total_travel_time</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Trip Duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="kp">sum</span><span class="p">()</span>
+    <span class="n">mean_travel_time</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Trip Duration&#39;</span><span class="p">]</span><span class="o">.</span><span class="kp">mean</span><span class="p">()</span>
+    <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, the total travel time was {} seconds and average travel time was {} seconds.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">total_travel_time</span><span class="p">,</span><span class="n">mean_travel_time</span><span class="p">))</span>
+
+
+    <span class="c1">#user type info</span>
+    <span class="c1">#convert value count to dictionary for easier unpacking into a list via a for loop</span>
+    <span class="n">subscribers</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;User Type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">subscribers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {},there are {} {}(s).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">k</span><span class="p">))</span>
+
+    <span class="c1">#gender info</span>
+    <span class="c1">#check to see if there is gender column</span>
+    <span class="k">if</span> <span class="s1">&#39;gender&#39;</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span> <span class="c1">#convert column names to lower case for easier comparison</span>
+        <span class="n">gender</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Gender&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">gender</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {},there are {} {}(s).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">k</span><span class="p">))</span>
+
+
+    <span class="c1">#birth info</span>
+    <span class="k">if</span> <span class="s1">&#39;birth year&#39;</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span> <span class="c1">#convert column names to lower case for easier comparison</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="kp">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="kp">test</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+        <span class="n">oldest_rider</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="kp">test</span><span class="p">][</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">.</span><span class="kp">min</span><span class="p">()</span>
+        <span class="n">youngest_rider</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="kp">test</span><span class="p">][</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">.</span><span class="kp">max</span><span class="p">()</span>
+        <span class="n">most_common</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="kp">test</span><span class="p">][</span><span class="s1">&#39;Birth Year&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()</span><span class="o">.</span><span class="kp">max</span><span class="p">()</span>
+        <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, the oldest rider was born in the year: {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">oldest_rider</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, the youngest rider was born in the year: {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">youngest_rider</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="kp">append</span><span class="p">(</span><span class="s1">&#39;For {}, the most common birth year was: {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="n">most_common</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+
+<span class="k">def</span> <span class="nf">display_output</span><span class="p">(</span><span class="n">output_list</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Input: The function recevies a list containing all analysis</span>
+<span class="sd">    Process: The function iterates through the list to print each element and asks for user</span>
+<span class="sd">    input after every 5 print statements</span>
+<span class="sd">    Output: None</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">counter</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">start</span><span class="o">=</span><span class="n">counter</span>
+    <span class="n">end</span><span class="o">=</span><span class="n">counter</span><span class="o">+</span><span class="mi">5</span>
+    <span class="n">max_iteration</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">output_list</span><span class="p">)</span>
+    <span class="n">last_loop</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">counter</span><span class="o">&lt;</span><span class="n">max_iteration</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">):</span>
+            <span class="c1">#print(&#39;i is {} and counter is {}&#39;.format(i,counter))</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">output_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">counter</span><span class="o">=</span><span class="n">counter</span><span class="o">+</span><span class="mi">5</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">counter</span>
+
+
+        <span class="k">if</span> <span class="n">last_loop</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter 0 to exit seeing the output or enter anything else to continue seeing the output: &#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">==</span><span class="s1">&#39;0&#39;</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Now exiting the analysis display.&#39;</span><span class="p">)</span>
+                <span class="k">break</span> <span class="c1">#break if the user chooses to exit early</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span> <span class="c1">#will break the for loop since this is last iteration</span>
+
+
+        <span class="c1">#check if end limit is less than 5 to determine if the next loop is the last loop</span>
+        <span class="c1"># if next loop is the last loop then reset end limit to whatever is left over</span>
+        <span class="k">if</span> <span class="n">max_iteration</span><span class="o">-</span><span class="n">counter</span><span class="o">&lt;=</span><span class="mi">5</span><span class="p">:</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">start</span><span class="o">+</span><span class="p">(</span><span class="n">max_iteration</span><span class="o">-</span><span class="n">counter</span><span class="p">)</span>
+            <span class="n">last_loop</span><span class="o">=</span><span class="mi">1</span> <span class="c1">#will prevent asking the user for input in the last iteration</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">counter</span><span class="o">+</span><span class="mi">5</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The main function calls the rest of the functions to load the data, calculate results and</span>
+<span class="sd">    diplay the data.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">exit_loop</span><span class="o">=</span><span class="bp">True</span>
+    <span class="k">while</span> <span class="n">exit_loop</span><span class="p">:</span>  
+        <span class="n">data</span><span class="o">=</span><span class="n">load_filter_data</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">=</span><span class="n">calculate_stats</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">display_output</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+        <span class="n">tmp</span><span class="o">=</span><span class="nb">input</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> </span><span class="se">\n</span><span class="s1">If you would like to end the program, enter 0 or else enter anything to continue running this program: &#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tmp</span><span class="o">==</span><span class="s1">&#39;0&#39;</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;This program will now terminate.&#39;</span><span class="p">)</span>
+            <span class="n">exit_loop</span><span class="o">=</span><span class="bp">False</span>
+
+
+<span class="c1"># In[3]:</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+
+<span class="c1"># In[ ]:</span>
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Amit Shankar
+    </span>
+  </span>
+<time datetime="2018-04-05T00:00:00+02:00" pubdate>Thu 05 April 2018</time>  <span class="categories">
+    <a class='category' href='/category/udacity-courses.html'>Udacity Courses</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="/tag/data-analyst-nanodegree.html">data analyst nanodegree</a>,    <a class="category" href="/tag/python.html">python</a>,    <a class="category" href="/tag/programming.html">programming</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="/tmdb-movie-data-exploration-with-python.html">TMDb movie data exploration with Python</a>
+      </li>
+      <li class="post">
+          <a href="/red-wine-eda-with-r.html">Red Wine EDA with R</a>
+      </li>
+      <li class="post">
+          <a href="/bart-ridership-stats-with-user-validation-in-python.html">Bart Ridership Stats with User Validation in Python</a>
+      </li>
+      <li class="post">
+          <a href="/san-francisco-temperature-eda-using-excel.html">San Francisco Temperature EDA Using Excel</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="/category/udacity-courses.html">Udacity Courses</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="/tag/data-analyst-nanodegree.html">data analyst nanodegree</a>,    <a href="/tag/python.html">python</a>,    <a href="/tag/eda.html">eda</a>,    <a href="/tag/programming.html">programming</a>,    <a href="/tag/excel.html">excel</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="https://amitshankar.github.io" target="_blank">Home</a></li>
+            <li><a href="/pages/about-me.html" target="_blank">About Me</a></li>
+            <li><a href="https://github.com/amitshankar" target="_blank">GitHub Repo</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://getpelican.com/" target="_blank">Pelican</a></li>
+            <li><a href="http://python.org/" target="_blank">Python.org</a></li>
+            <li><a href="http://jinja.pocoo.org/" target="_blank">Jinja2</a></li>
+            <li><a href="#" target="_blank">You can modify those links in your config file</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2018  Amit Kumar Shankar &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="/theme/js/modernizr-2.0.js"></script>
+  <script src="/theme/js/ender.js"></script>
+  <script src="/theme/js/octopress.js" type="text/javascript"></script>
+</body>
+</html>
