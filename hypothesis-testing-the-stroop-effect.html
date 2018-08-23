@@ -63,10 +63,10 @@ Independent variables are word and color combination of text that is shown to th
 <p>(2) What is an appropriate set of hypotheses for this task? Specify your null and alternative hypotheses, and clearly define any notation used. Justify your choices.</p>
 <p><strong>Answer</strong><br>
 Two tail test is ideal when direction is not important. In this case, the null hypothesis could be that mean congruent time is equal to mean incongruent time. The alternate hypothesis is that the mean congruent time is not equal to incongruent time.</p>
-<p>$$H_0: \mu_{congruent} - \mu_{incongruent} = 0$$
-$$H_0: \mu_{congruent} - \mu_{incongruent} \neq 0$$</p>
-<p><strong>$\mu_{congruent}$  and  $\mu_{incongruent}$ are population mean.</strong></p>
-<p><strong> $\alpha$ = 0.05  (threshold of type 1 error)</strong></p>
+<div class="math">$$H_0: \mu_{congruent} - \mu_{incongruent} = 0$$</div>
+<div class="math">$$H_0: \mu_{congruent} - \mu_{incongruent} \neq 0$$</div>
+<p><strong><span class="math">\(\mu_{congruent}\)</span>  and  <span class="math">\(\mu_{incongruent}\)</span> are population mean.</strong></p>
+<p><strong> <span class="math">\(\alpha\)</span> = 0.05  (threshold of type 1 error)</strong></p>
 <p>Degrees of freedom = 24-1=23</p>
 <p>Assumption: Since the same candidate is taking the congruent and incongruent test, I am assuming that the two are related ( the candidate is the same just the test is different).</p>
 <p>(3) Report some descriptive statistics regarding this dataset. Include at least one measure of central tendency and at least one measure of variability. The name of the data file is 'stroopdata.csv'.</p>
@@ -288,7 +288,7 @@ Since the t statistic of -8.021 is outside the acceptable 95% confidence interva
 null hypothsis. 
 <br><br>
 Analysing p value:<br>
-Also, since p value of 4.103e-08 is less than $\alpha$ of 0.05, we reject the null as well.</p>
+Also, since p value of 4.103e-08 is less than <span class="math">\(\alpha\)</span> of 0.05, we reject the null as well.</p>
 <p>Therefore, we can not accept the null hythesis that mean congruent value is equal to mean incongruent value.</p>
 <div class="highlight"><pre><span></span>
 </pre></div>
@@ -318,7 +318,64 @@ http://davidmlane.com/hyperstat/A92403.html<br>
 https://stackoverflow.com/questions/12838993/scipy-normaltest-how-is-it-used <br>
 https://stackoverflow.com/questions/36667548/how-to-create-a-series-of-numbers-using-pandas-in-python <br></p>
 <div class="highlight"><pre><span></span>
-</pre></div></div>
+</pre></div>
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
@@ -341,19 +398,19 @@ https://stackoverflow.com/questions/36667548/how-to-create-a-series-of-numbers-u
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="/some-titile.html">some titile</a>
+      </li>
+      <li class="post">
+          <a href="/ab-test-analysis.html">A/B Test Analysis</a>
+      </li>
+      <li class="post">
+          <a href="/rtest.html">rtest</a>
+      </li>
+      <li class="post">
           <a href="/eda-of-red-wine-dataset-with-r.html">EDA of Red Wine Dataset with R</a>
       </li>
       <li class="post">
           <a href="/hypothesis-testing-the-stroop-effect.html">Hypothesis testing the Stroop Effect</a>
-      </li>
-      <li class="post">
-          <a href="/analyze-ab-test-results.html">Analyze A/B Test Results</a>
-      </li>
-      <li class="post">
-          <a href="/movie-tmdb-eda-in-python.html">Movie tmdb EDA in Python</a>
-      </li>
-      <li class="post">
-          <a href="/bart-ridership-stats-with-user-validation-in-python.html">Bart Ridership Stats with User Validation in Python</a>
       </li>
     </ul>
   </section>
@@ -392,7 +449,7 @@ https://stackoverflow.com/questions/36667548/how-to-create-a-series-of-numbers-u
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018  Amit Kumar Shankar &mdash;
+    Copyright &copy;  2018&ndash;2028  Amit Kumar Shankar &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="/theme/js/modernizr-2.0.js"></script>

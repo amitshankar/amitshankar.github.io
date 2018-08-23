@@ -718,16 +718,18 @@ Unique user id in df2 is 290584
 <p>Notice that because of the time stamp associated with each event, you could technically run a hypothesis test continuously as each observation was observed.  </p>
 <p>However, then the hard question is do you stop as soon as one page is considered significantly better than another or does it need to happen consistently for a certain amount of time?  How long do you run to render a decision that neither page is better than another?  </p>
 <p>These questions are the difficult parts associated with A/B tests in general.  </p>
-<p><code>1.</code> For now, consider you need to make the decision just based on all the data provided.  If you want to assume that the old page is better unless the new page proves to be definitely better at a Type I error rate of 5%, what should your null and alternative hypotheses be?  You can state your hypothesis in terms of words or in terms of <strong>$p_{old}$</strong> and <strong>$p_{new}$</strong>, which are the converted rates for the old and new pages.</p>
-<p>$$H_0:P_{old}-P_{new}&gt;=0 $$   <br>
-$$H_1:P_{new}-P_{old}&gt;0 $$</p>
+<p><code>1.</code> For now, consider you need to make the decision just based on all the data provided.  If you want to assume that the old page is better unless the new page proves to be definitely better at a Type I error rate of 5%, what should your null and alternative hypotheses be?  You can state your hypothesis in terms of words or in terms of <strong><span class="math">\(p_{old}\)</span></strong> and <strong><span class="math">\(p_{new}\)</span></strong>, which are the converted rates for the old and new pages.</p>
+<div class="math">$$H_0:P_{old}-P_{new}&gt;=0 $$</div>
+<p>   <br>
+</p>
+<div class="math">$$H_1:P_{new}-P_{old}&gt;0 $$</div>
 <p>alpha=0.05<br>
 To reject the null hypothesis: p&lt;alpha </p>
-<p><code>2.</code> Assume under the null hypothesis, $p_{new}$ and $p_{old}$ both have "true" success rates equal to the <strong>converted</strong> success rate regardless of page - that is $p_{new}$ and $p_{old}$ are equal. Furthermore, assume they are equal to the <strong>converted</strong> rate in <strong>ab_data.csv</strong> regardless of the page. <br><br></p>
+<p><code>2.</code> Assume under the null hypothesis, <span class="math">\(p_{new}\)</span> and <span class="math">\(p_{old}\)</span> both have "true" success rates equal to the <strong>converted</strong> success rate regardless of page - that is <span class="math">\(p_{new}\)</span> and <span class="math">\(p_{old}\)</span> are equal. Furthermore, assume they are equal to the <strong>converted</strong> rate in <strong>ab_data.csv</strong> regardless of the page. <br><br></p>
 <p>Use a sample size for each page equal to the ones in <strong>ab_data.csv</strong>.  <br><br></p>
 <p>Perform the sampling distribution for the difference in <strong>converted</strong> between the two pages over 10,000 iterations of calculating an estimate from the null.  <br><br></p>
 <p>Use the cells below to provide the necessary parts of this simulation.  If this doesn't make complete sense right now, don't worry - you are going to work through the problems below to complete this problem.  You can use <strong>Quiz 5</strong> in the classroom to make sure you are on the right track.<br><br></p>
-<p>a. What is the <strong>convert rate</strong> for $p_{new}$ under the null? </p>
+<p>a. What is the <strong>convert rate</strong> for <span class="math">\(p_{new}\)</span> under the null? </p>
 <div class="highlight"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -816,7 +818,7 @@ To reject the null hypothesis: p&lt;alpha </p>
 </pre></div>
 
 
-<p>b. What is the <strong>convert rate</strong> for $p_{old}$ under the null? <br><br></p>
+<p>b. What is the <strong>convert rate</strong> for <span class="math">\(p_{old}\)</span> under the null? <br><br></p>
 <div class="highlight"><pre><span></span><span class="c1">#Assuming success rate of P_n and P_o are equal</span>
 <span class="n">p_old</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;converted==1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">df2</span><span class="o">.</span><span class="n">count</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">p_old</span>
@@ -827,7 +829,7 @@ To reject the null hypothesis: p&lt;alpha </p>
 </pre></div>
 
 
-<p>c. What is $n_{new}$?</p>
+<p>c. What is <span class="math">\(n_{new}\)</span>?</p>
 <div class="highlight"><pre><span></span><span class="n">df2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -926,7 +928,7 @@ Name: landing_page, dtype: int64
 </pre></div>
 
 
-<p>d. What is $n_{old}$?</p>
+<p>d. What is <span class="math">\(n_{old}\)</span>?</p>
 <div class="highlight"><pre><span></span><span class="n">n_old</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">landing_page</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">n_old</span>
 </pre></div>
@@ -936,7 +938,7 @@ Name: landing_page, dtype: int64
 </pre></div>
 
 
-<p>e. Simulate $n_{new}$ transactions with a convert rate of $p_{new}$ under the null.  Store these $n_{new}$ 1's and 0's in <strong>new_page_converted</strong>.</p>
+<p>e. Simulate <span class="math">\(n_{new}\)</span> transactions with a convert rate of <span class="math">\(p_{new}\)</span> under the null.  Store these <span class="math">\(n_{new}\)</span> 1's and 0's in <strong>new_page_converted</strong>.</p>
 <div class="highlight"><pre><span></span><span class="n">outcome</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">new_page_converted</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcome</span><span class="p">,</span><span class="n">n_new</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_new</span><span class="p">,</span><span class="n">p_new</span><span class="p">))</span>
 <span class="n">new_page_converted</span>
@@ -947,7 +949,7 @@ Name: landing_page, dtype: int64
 </pre></div>
 
 
-<p>f. Simulate $n_{old}$ transactions with a convert rate of $p_{old}$ under the null.  Store these $n_{old}$ 1's and 0's in <strong>old_page_converted</strong>.</p>
+<p>f. Simulate <span class="math">\(n_{old}\)</span> transactions with a convert rate of <span class="math">\(p_{old}\)</span> under the null.  Store these <span class="math">\(n_{old}\)</span> 1's and 0's in <strong>old_page_converted</strong>.</p>
 <div class="highlight"><pre><span></span><span class="n">outcome</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">old_page_converted</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">outcome</span><span class="p">,</span><span class="n">n_old</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">p_old</span><span class="p">,</span><span class="n">p_old</span><span class="p">))</span>        
 <span class="n">old_page_converted</span>
@@ -958,7 +960,7 @@ Name: landing_page, dtype: int64
 </pre></div>
 
 
-<p>g. Find $p_{new}$ - $p_{old}$ for your simulated values from part (e) and (f).</p>
+<p>g. Find <span class="math">\(p_{new}\)</span> - <span class="math">\(p_{old}\)</span> for your simulated values from part (e) and (f).</p>
 <div class="highlight"><pre><span></span><span class="n">old_page_converted_mean</span><span class="o">=</span><span class="n">old_page_converted</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">new_page_converted_mean</span><span class="o">=</span><span class="n">new_page_converted</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">new_page_converted_mean</span><span class="o">-</span><span class="n">old_page_converted_mean</span>
@@ -969,7 +971,7 @@ Name: landing_page, dtype: int64
 </pre></div>
 
 
-<p>h. Simulate 10,000 $p_{new}$ - $p_{old}$ values using this same process similarly to the one you calculated in parts <strong>a. through g.</strong> above.  Store all 10,000 values in <strong>p_diffs</strong>.</p>
+<p>h. Simulate 10,000 <span class="math">\(p_{new}\)</span> - <span class="math">\(p_{old}\)</span> values using this same process similarly to the one you calculated in parts <strong>a. through g.</strong> above.  Store all 10,000 values in <strong>p_diffs</strong>.</p>
 <div class="highlight"><pre><span></span><span class="n">p_diffs</span><span class="o">=</span><span class="p">[]</span>
 <span class="n">size</span><span class="o">=</span><span class="n">df2</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">):</span>
@@ -1408,14 +1410,18 @@ should be between -1.95 and 1.95. Since the z score of -1.31 is between
 <p><strong>Answer</strong>
 <br>
 Part II : We assume the old page is better than equal to the new page with alpha of 0.05.</p>
-<p>$$H_0:P_{old}&gt;=P_{new} $$   <br>
-$$H_1:P_{new}&gt;P_{old} $$</p>
+<div class="math">$$H_0:P_{old}&gt;=P_{new} $$</div>
+<p>   <br>
+</p>
+<div class="math">$$H_1:P_{new}&gt;P_{old} $$</div>
 <p>alpha=0.05<br>
 To reject the null hypothesis: p<alpha <br>
 Since p=0.905, and p is greater than alpha, we stay with the null hypothesis that probability of old page could be greater than or equal to probability of new page.</p>
 <p>Part III : We assume that the old page is equal to the new page.</p>
-<p>$$H_0:P_{old}=P_{new} $$   <br>
-$$H_1:P_{old} \ne P_{new} $$</p>
+<div class="math">$$H_0:P_{old}=P_{new} $$</div>
+<p>   <br>
+</p>
+<div class="math">$$H_1:P_{old} \ne P_{new} $$</div>
 <p>Since p=0.19, and p is greater than alpha, we stay with the null hypothesis that the probabilty of old page is equal to the probabilty of the new page.</p>
 <p>f. Now, you are considering other things that might influence whether or not an individual converts.  Discuss why it is a good idea to consider other factors to add into your regression model.  Are there any disadvantages to adding additional terms into your regression model?</p>
 <p><strong>Put your answer here.</strong> <br>
@@ -2039,7 +2045,64 @@ http://knowledgetack.com/python/statsmodels/proportions_ztest/</p>
 
 
 <div class="highlight"><pre><span></span>0
-</pre></div></div>
+</pre></div>
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script></div>
     <footer>
 <p class="meta">
   <span class="byline author vcard">
@@ -2062,19 +2125,19 @@ http://knowledgetack.com/python/statsmodels/proportions_ztest/</p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="/some-titile.html">some titile</a>
+      </li>
+      <li class="post">
+          <a href="/ab-test-analysis.html">A/B Test Analysis</a>
+      </li>
+      <li class="post">
+          <a href="/rtest.html">rtest</a>
+      </li>
+      <li class="post">
           <a href="/eda-of-red-wine-dataset-with-r.html">EDA of Red Wine Dataset with R</a>
       </li>
       <li class="post">
           <a href="/hypothesis-testing-the-stroop-effect.html">Hypothesis testing the Stroop Effect</a>
-      </li>
-      <li class="post">
-          <a href="/analyze-ab-test-results.html">Analyze A/B Test Results</a>
-      </li>
-      <li class="post">
-          <a href="/movie-tmdb-eda-in-python.html">Movie tmdb EDA in Python</a>
-      </li>
-      <li class="post">
-          <a href="/bart-ridership-stats-with-user-validation-in-python.html">Bart Ridership Stats with User Validation in Python</a>
       </li>
     </ul>
   </section>
@@ -2113,7 +2176,7 @@ http://knowledgetack.com/python/statsmodels/proportions_ztest/</p>
 </aside>    </div>
   </div>
   <footer role="contentinfo"><p>
-    Copyright &copy;  2018  Amit Kumar Shankar &mdash;
+    Copyright &copy;  2018&ndash;2028  Amit Kumar Shankar &mdash;
   <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
 </p></footer>
   <script src="/theme/js/modernizr-2.0.js"></script>
