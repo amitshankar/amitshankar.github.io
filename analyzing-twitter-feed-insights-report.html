@@ -53,32 +53,7 @@
 <time datetime="2018-08-18T00:00:00+02:00" pubdate>Sat 18 August 2018</time>    </p>
 </header>
 
-  <div class="entry-content"><!–– The codes in this cell will add a toggle button to show/hide jupyter codes in web browser  ––>
-<!–– Source: https://stackoverflow.com/questions/27934885/how-to-hide-code-from-cells-in-ipython-notebook-visualized-with-nbviewer  ––>
-
-<script>
-  function code_toggle() {
-    if (code_shown){
-      $('div.input').hide('500');
-      $('#toggleButton').val('Show Code')
-    } else {
-      $('div.input').show('500');
-      $('#toggleButton').val('Hide Code')
-    }
-    code_shown = !code_shown
-  }
-
-  $( document ).ready(function(){
-    code_shown=false;
-    $('div.input').hide()
-  });
-</script>
-
-<form action="javascript:code_toggle()">
-  <input type="submit" id="toggleButton" value="Show Code">
-</form>
-
-<h1>Act Report</h1>
+  <div class="entry-content"><h1>Act Report</h1>
 <p>Explored the cleaned data to gain insights on the following questions: </p>
 <ol>
 <li>Is the tweet that received the most favorites count also the tweet that was retweeted most?</li>
