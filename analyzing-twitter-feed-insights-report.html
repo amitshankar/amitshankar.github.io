@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Analyzing Twitter Feed - Insights Report &mdash; All Things Data</title>
+  <meta name="author" content="Amit Kumar Shankar">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="/favicon.png" rel="icon">
+
+  <link href="/theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="/">All Things Data</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+    <li><a href="https://amitshankar.github.io">Home</a></li>
+    <li><a href="/pages/about-me.html">About Me</a></li>
+    <li><a href="https://github.com/amitshankar">GitHub Repo</a></li>
+    <li><a href="/pages/amit-kumar-shankar.html">Resume</a></li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Analyzing Twitter Feed - Insights Report</h1>
+    <p class="meta">
+<time datetime="2018-08-18T00:00:00+02:00" pubdate>Sat 18 August 2018</time>    </p>
+</header>
+
+  <div class="entry-content"><!–– The codes in this cell will add a toggle button to show/hide jupyter codes in web browser  ––>
+<!–– Source: https://stackoverflow.com/questions/27934885/how-to-hide-code-from-cells-in-ipython-notebook-visualized-with-nbviewer  ––>
+
+<script>
+  function code_toggle() {
+    if (code_shown){
+      $('div.input').hide('500');
+      $('#toggleButton').val('Show Code')
+    } else {
+      $('div.input').show('500');
+      $('#toggleButton').val('Hide Code')
+    }
+    code_shown = !code_shown
+  }
+
+  $( document ).ready(function(){
+    code_shown=false;
+    $('div.input').hide()
+  });
+</script>
+
+<form action="javascript:code_toggle()">
+  <input type="submit" id="toggleButton" value="Show Code">
+</form>
+
+<h1>Act Report</h1>
+<p>Explored the cleaned data to gain insights on the following questions: </p>
+<ol>
+<li>Is the tweet that received the most favorites count also the tweet that was retweeted most?</li>
+<li>What day of the week were most of the tweets created? </li>
+<li>What are some of the common words used in the top tweets?</li>
+</ol>
+<h1>Reference</h1>
+<p>https://pandas.pydata.org/pandas-docs/version/0.23/generated/pandas.DataFrame.plot.bar.html<br>
+https://stackoverflow.com/questions/16645799/how-to-create-a-word-cloud-from-a-corpus-in-python<br>
+https://stackoverflow.com/questions/27934885/how-to-hide-code-from-cells-in-ipython-notebook-visualized-with-nbviewer  </p>
+<div class="highlight"><pre><span></span><span class="c1"># Import libraries</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="kn">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">wordcloud</span> <span class="kn">import</span> <span class="n">WordCloud</span><span class="p">,</span> <span class="n">STOPWORDS</span> 
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">,</span> <span class="n">color_codes</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># Source: https://stackoverflow.com/questions/16645799/how-to-create-a-word-cloud-from-a-corpus-in-python</span>
+<span class="n">stopwords</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">STOPWORDS</span><span class="p">)</span>  <span class="c1"># set the stop words</span>
+
+<span class="k">def</span> <span class="nf">show_wordcloud</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+        <span class="n">background_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+        <span class="n">stopwords</span><span class="o">=</span><span class="n">stopwords</span><span class="p">,</span>
+        <span class="n">max_words</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+        <span class="n">max_font_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> 
+        <span class="n">scale</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span> <span class="c1"># chosen at random by flipping a coin; it was heads</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span> 
+        <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">2.3</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="c1"># read the main tweet dataset csv</span>
+<span class="n">df_main</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;main_twitter_dataset.csv&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h1>Question 1: Is the tweet that received the most favorites count also the tweet that was retweeted most?</h1>
+<div class="highlight"><pre><span></span><span class="n">tmp</span><span class="o">=</span><span class="n">df_main</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">,</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">],</span>
+                        <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[[</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">,</span><span class="s1">&#39;retweet_count&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Table of Tweet IDs with the top 10 favorites count and retweets count&#39;</span><span class="p">)</span>
+
+<span class="n">tmp</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Table of Tweet IDs with the top 10 favorites count and retweets count
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tweet_id</th>
+      <th>favorite_count</th>
+      <th>retweet_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>872</th>
+      <td>744234799360020481</td>
+      <td>162143.0</td>
+      <td>84152.0</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>822872901745569793</td>
+      <td>142138.0</td>
+      <td>48561.0</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>866450705531457537</td>
+      <td>123352.0</td>
+      <td>36023.0</td>
+    </tr>
+    <tr>
+      <th>449</th>
+      <td>807106840509214720</td>
+      <td>121999.0</td>
+      <td>60430.0</td>
+    </tr>
+    <tr>
+      <th>912</th>
+      <td>739238157791694849</td>
+      <td>121443.0</td>
+      <td>62781.0</td>
+    </tr>
+    <tr>
+      <th>63</th>
+      <td>879415818425184262</td>
+      <td>105136.0</td>
+      <td>44023.0</td>
+    </tr>
+    <tr>
+      <th>376</th>
+      <td>819004803107983360</td>
+      <td>92986.0</td>
+      <td>40642.0</td>
+    </tr>
+    <tr>
+      <th>147</th>
+      <td>859196978902773760</td>
+      <td>91694.0</td>
+      <td>31340.0</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>870374049280663552</td>
+      <td>82744.0</td>
+      <td>26514.0</td>
+    </tr>
+    <tr>
+      <th>451</th>
+      <td>806629075125202948</td>
+      <td>81404.0</td>
+      <td>38968.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span><span class="n">ax</span><span class="o">=</span><span class="n">tmp</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;tweet_id&#39;</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">subplots</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Graph of Top Tweets Favorite&#39;s Count and Retweet Count&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span>
+</pre></div>
+
+
+<p><img alt="png" src="images/data_analyst_nanodegree_term_02_project_03_act_report_v2_0/data_analyst_nanodegree_term_02_project_03_act_report_v2_0_8_0.png"></p>
+<p>From the graph above it can be seen that the tweet that received the most favorite's count was not the tweet that was retweeted 
+most.</p>
+<p>Tweet corresponding to the tweet id 822872901745569793 received the highest favorites count while tweet corresponding to tweet id 744234799360020481 received the highest retweet count. </p>
+<p>It can also be observed that the top 10 tweets:
+1. Favorites count was more than 80,000
+2. Retweets count was more than 20,000</p>
+<h1>Question 2: What day of the week were most of the tweets created?</h1>
+<div class="highlight"><pre><span></span><span class="n">tmp</span><span class="o">=</span><span class="n">df_main</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;timestamp_weekday&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Number of Tweets&quot;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Table of number of Tweets by weekday&#39;</span><span class="p">)</span>
+
+<span class="n">tmp</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Table of number of Tweets by weekday
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>timestamp_weekday</th>
+      <th>Number of Tweets</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>359</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>328</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>322</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>307</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>307</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>5</td>
+      <td>287</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>6</td>
+      <td>277</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span></span><span class="c1"># create a dictionary for mapping</span>
+<span class="n">di_day</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span><span class="s1">&#39;Monday&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">:</span><span class="s1">&#39;Tuesday&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">:</span><span class="s1">&#39;Wednesday&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">:</span><span class="s1">&#39;Thursday&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">:</span><span class="s1">&#39;Friday&#39;</span><span class="p">,</span><span class="s1">&#39;5&#39;</span><span class="p">:</span><span class="s1">&#39;Saturday&#39;</span><span class="p">,</span><span class="s1">&#39;6&#39;</span><span class="p">:</span><span class="s1">&#39;Sunday&#39;</span><span class="p">}</span>
+
+<span class="c1"># map the dictionary </span>
+<span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;timestamp_weekday&#39;</span><span class="p">]</span><span class="o">=</span><span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;timestamp_weekday&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">di_day</span><span class="p">)</span>
+
+<span class="c1"># plot the barplot</span>
+<span class="n">ax</span><span class="o">=</span><span class="n">tmp</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;timestamp_weekday&#39;</span><span class="p">,</span><span class="n">rot</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">subplots</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Graph of Total Tweets by Day&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span>
+</pre></div>
+
+
+<p><img alt="png" src="images/data_analyst_nanodegree_term_02_project_03_act_report_v2_0/data_analyst_nanodegree_term_02_project_03_act_report_v2_0_12_0.png"></p>
+<p>From the above graph it can be observed that the highest number of tweets were created on Monday. It is interesting to note that the number of tweets tapered down towards the weekend.  </p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+
+
+<h1>Question 3: What are some of the common words used in the top tweets?</h1>
+<div class="highlight"><pre><span></span><span class="c1"># extract the top tweets</span>
+<span class="n">tmp</span><span class="o">=</span><span class="n">df_main</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;favorite_count&#39;</span><span class="p">],</span><span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[[</span><span class="s1">&#39;text&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;Below are text corresponding to the top 10 tweets that received the most favorites count&gt;&gt; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1">#view the top tweets</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>&lt;&lt;Below are text corresponding to the top 10 tweets that received the most favorites count&gt;&gt;
+
+Here&#39;s a doggo realizing you can stand in a pool. 13/10 enlightened af (vid by Tina Conrad) https://t.co/7wE9LTEXC4
+Here&#39;s a super supportive puppo participating in the Toronto  #WomensMarch today. 13/10 https://t.co/nTz3FtorBc
+This is Jamesy. He gives a kiss to every other pupper he sees on his walk. 13/10 such passion, much tender https://t.co/wk7TfysWHr
+This is Stephan. He just wants to help. 13/10 such a good boy https://t.co/DkBYaCAg2d
+Here&#39;s a doggo blowing bubbles. It&#39;s downright legendary. 13/10 would watch on repeat forever (vid by Kent Duryee) https://t.co/YcXgHfp1EC
+This is Duddles. He did an attempt. 13/10 someone help him (vid by Georgia Felici) https://t.co/UDT7ZkcTgY
+This is Bo. He was a very good First Doggo. 14/10 would be an absolute honor to pet https://t.co/AdPKrI8BZ1
+We only rate dogs. This is quite clearly a smol broken polar bear. We&#39;d appreciate if you only send dogs. Thank you... 12/10 https://t.co/g2nSyGenG9
+This is Zoey. She really likes the planet. Would hate to see willful ignorance and the denial of fairly elemental science destroy it. 13/10 https://t.co/T1xlgaPujm
+&quot;Good afternoon class today we&#39;re going to learn what makes a good boy so good&quot; 13/10 https://t.co/f1h2Fsalv9
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Word cloud of some of the common words in top 10 tweets that received the most favorites count&#39;</span> <span class="p">)</span>
+<span class="n">show_wordcloud</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>Word cloud of some of the common words in top 10 tweets that received the most favorites count
+</pre></div>
+
+
+<p><img alt="png" src="images/data_analyst_nanodegree_term_02_project_03_act_report_v2_0/data_analyst_nanodegree_term_02_project_03_act_report_v2_0_17_1.png"></p>
+<p>From the word cloud, it can be observed that the top 10 tweets contained some interesting text such as:<br>
+help, stand, kiss, participating, supportive, gives, wants, quite.</p>
+<div class="highlight"><pre><span></span>
+</pre></div></div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Amit Shankar
+    </span>
+  </span>
+<time datetime="2018-08-18T00:00:00+02:00" pubdate>Sat 18 August 2018</time>  <span class="categories">
+    <a class='category' href='/category/udacity-courses.html'>Udacity Courses</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="/tag/data-analyst-nanodegree.html">data analyst nanodegree</a>,    <a class="category" href="/tag/python.html">python</a>,    <a class="category" href="/tag/twitter.html">twitter</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="/analyzing-twitter-feed-insights-report.html">Analyzing Twitter Feed - Insights Report</a>
+      </li>
+      <li class="post">
+          <a href="/eda-of-red-wine-dataset-with-r.html">EDA of Red Wine Dataset with R</a>
+      </li>
+      <li class="post">
+          <a href="/hypothesis-testing-the-stroop-effect.html">Hypothesis testing the Stroop Effect</a>
+      </li>
+      <li class="post">
+          <a href="/analyze-ab-test-results.html">Analyze A/B Test Results</a>
+      </li>
+      <li class="post">
+          <a href="/movie-tmdb-eda-in-python.html">Movie tmdb EDA in Python</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="/category/udacity-courses.html">Udacity Courses</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="/tag/data-analyst-nanodegree.html">data analyst nanodegree</a>,    <a href="/tag/python.html">python</a>,    <a href="/tag/twitter.html">twitter</a>,    <a href="/tag/r.html">r</a>,    <a href="/tag/hypothesis-testing.html">hypothesis testing</a>,    <a href="/tag/ab-tests.html">A/B tests</a>,    <a href="/tag/eda.html">eda</a>,    <a href="/tag/programming.html">programming</a>,    <a href="/tag/excel.html">excel</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="https://amitshankar.github.io" target="_blank">Home</a></li>
+            <li><a href="/pages/about-me.html" target="_blank">About Me</a></li>
+            <li><a href="https://github.com/amitshankar" target="_blank">GitHub Repo</a></li>
+            <li><a href="/pages/amit-kumar-shankar.html" target="_blank">Resume</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2018  Amit Kumar Shankar &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="/theme/js/modernizr-2.0.js"></script>
+  <script src="/theme/js/ender.js"></script>
+  <script src="/theme/js/octopress.js" type="text/javascript"></script>
+</body>
+</html>
