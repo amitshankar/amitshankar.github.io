@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Binomial Distribution with Python</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="/theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="/theme/pygment.css" />
+
+        <script src="/theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="/">Data Analysis <strong></strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="/">Home</a></li>
+
+                <li><a href="https://www.datascienceweekly.org/articles">Data Science Weekly</a></li>
+                <li><a href="https://www.kaggle.com/discussion">Kaggle</a></li>
+                <li><a href="https://github.com/amitshankar">Git Hub</a></li>
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="/binomial-distribution-with-python.html" rel="bookmark"
+                   title="Permalink to Binomial Distribution with Python">Binomial Distribution with Python</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2022-02-15T06:00:00+01:00">
+                Tue 15 February 2022
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="/author/amit-shankar.html"> Amit Shankar</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Lets explore the following problem:</p>
+<p>There are 1 red and 2 green marbles in a bag.</p>
+<p>What is the probabilty of getting exactly 1 red marble in 2 trials?</p>
+<p>The sample space is {RR,RG, GR, GG}</p>
+<p>P(Red Marble) = 1/3
+P(Green Marble) = 2/3</p>
+<p>RR = 1/3 * 1/3 = 1/9 = 0.11 --&gt; Probabilty of getting exactly 2 reds in 2 trials </p>
+<p>RG = 1/3 * 2/3 = 3/9 = 0.22 --&gt; Probabilty of getting exactly 1 red in 2 trials - red in first trial only</p>
+<p>GR = 2/3 * 1/3 = 2/0 = 0.22 --&gt; Probabilty of getting exactly 1 red in 2 trials - red in second trial only</p>
+<p>GG = 2/3 * 2/3 = 4/9 = 0.44 --&gt; Probabilty of getting 0 red in 2 trials</p>
+<p>Since we can get one red in two trials two ways {RG, GR} then the probabilty of getting exactly 1 read in 2 trials is 0.22 + 0.22 = 0.44</p>
+<p>Answer: 0.44 </p>
+<p>The sample space provides the intuition to finding the answer. As the number of trials incease so will the sample space and at some point it would be easier to use a program to answer this question.</p>
+<p>Lets look at doing the same using bino.pmf function. The probabilty mass function is ideal for discrete values. </p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">binom</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">binomial_probabilty</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">binomial_probabilty</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[0.44444444 0.44444444 0.11111111 0.        ]
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Probability of getting exactly </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> red marble in 2 trials is </span><span class="si">{</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span> <span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>Probability of getting exactly 0 red marble in 2 trials is 0.444
+Probability of getting exactly 1 red marble in 2 trials is 0.444
+Probability of getting exactly 2 red marble in 2 trials is 0.111
+Probability of getting exactly 3 red marble in 2 trials is 0.000
+
+
+
+
+
+[None, None, None, None]
+</code></pre></div>
+
+<p>Now, lets solve a slightly challenging version of the question with increased trial.</p>
+<p>Question:</p>
+<p>A bag has one red marble and two green marbles. What is the probabilty of getting exactly three red marbles in 5 trials?</p>
+<div class="highlight"><pre><span></span><code><span class="n">number_of_success</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">number_of_trials</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">prob_of_success</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">number_of_success</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">number_of_trials</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">prob_of_success</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The probability of getting exactly exactly 3 red marbles in 5 trials is </span><span class="si">{</span><span class="n">answer</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>The probability of getting exactly exactly 3 red marbles in 5 trials is 0.16.
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Probability of getting exactly </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> red marble in 5 trials is </span><span class="si">{</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">]</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>Probability of getting exactly 0 red marble in 5 trials is 0.132
+Probability of getting exactly 1 red marble in 5 trials is 0.329
+Probability of getting exactly 2 red marble in 5 trials is 0.329
+Probability of getting exactly 3 red marble in 5 trials is 0.165
+Probability of getting exactly 4 red marble in 5 trials is 0.041
+Probability of getting exactly 5 red marble in 5 trials is 0.004
+
+
+
+
+
+[None, None, None, None, None, None]
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">binomial_probabilty</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">binomial_probabilty</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>range(0, 6)
+[0.13168724 0.32921811 0.32921811 0.16460905 0.04115226 0.00411523]
+</code></pre></div>
+
+<p>Note above that pmf function has the ability to broadcast over a range of values. In this case its 'x' and we can find out the pmf for 0 occurance of red, 1 occurance of red, 2 occurance of red up to 5 occurance of red. Note the probabilty of getting 4 or 5 occurance of red in 5 tries is almost zero. </p>
+<p>The binom function has a frozen function for easier examination of the distribution. </p>
+<div class="highlight"><pre><span></span><code><span class="c1">#?binom</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">frozen</span> <span class="o">=</span> <span class="n">binom</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># number of trials is 5 and prob of success is 1/3</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">frozen</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># show all chances for the 5 trials</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">frozen</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span> <span class="c1"># show prob of exactly 3 reds in 5 trials</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[0.13168724 0.32921811 0.32921811 0.16460905 0.04115226 0.00411523]
+0.16460905349794233
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Probabilty of success is 1/3</span>
+<span class="c1"># Find probabilty of success and it should be 1/3 or 0.333333</span>
+<span class="c1"># P(RRRRR) = x*x*x*x*x = 0.00411523</span>
+<span class="mf">0.00411523</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>0.3333333926666455
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="c1"># Lets do some graphing for intuition</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">)</span> <span class="c1"># adding the 6th number for better visibilty on graphs. </span>
+<span class="n">y_pmf</span> <span class="o">=</span> <span class="p">[</span><span class="n">frozen</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">y_cdf</span> <span class="o">=</span> <span class="p">[</span><span class="n">frozen</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;X&#39;</span><span class="p">:</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;Y_pmf&#39;</span><span class="p">:</span><span class="n">y_pmf</span><span class="p">,</span> <span class="s1">&#39;Y_cdf&#39;</span><span class="p">:</span><span class="n">y_cdf</span><span class="p">})</span>
+<span class="c1">#tmp</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span><span class="n">headers</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span> <span class="o">=</span> <span class="s1">&#39;pretty&#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>+---+-----+-----------------------+---------------------+
+|   |  X  |         Y_pmf         |        Y_cdf        |
++---+-----+-----------------------+---------------------+
+| 0 | 0.0 |  0.13168724279835395  | 0.13168724279835398 |
+| 1 | 1.0 |  0.3292181069958847   | 0.4609053497942387  |
+| 2 | 2.0 |  0.3292181069958847   | 0.7901234567901236  |
+| 3 | 3.0 |  0.16460905349794233  | 0.9547325102880659  |
+| 4 | 4.0 | 0.041152263374485576  | 0.9958847736625515  |
+| 5 | 5.0 | 0.0041152263374485566 |         1.0         |
+| 6 | 6.0 |          0.0          |         1.0         |
++---+-----+-----------------------+---------------------+
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">tmp</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Y_pmf&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Figure 1: Probabilty Mass </span><span class="se">\n</span><span class="s1"> Distribution&#39;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.35</span><span class="p">})</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">tmp</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Y_cdf&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Figure 2: Probabilty Density </span><span class="se">\n</span><span class="s1"> Graph&#39;</span><span class="p">);</span> 
+</code></pre></div>
+
+<p><img alt="png" src="images/BinomialDistributionWithPython/BinomialDistributionWithPython_15_0.png"></p>
+<p>Note from Figure 1, the probablity of getting exactly 1 red or 2 reds are high about 33% each. This means 66% chance of getting 2 or 3 reads in 5 trials. Figure 2 is showing probabilty density approaching 1 since probabilty should add to 1. Note the gradient in Figure 2 is becoming smaller as it is approaching 1 indicating a very small chance of getting 4 reds in 5 trials and almost no chance of getting 5 reds or 6 reds in 5 trials. </p>
+<p>Getting 6 reds in 5 trials is NOT possible. </p>
+<p>Next generate the actual distribution from this simulation. </p>
+<div class="highlight"><pre><span></span><code><span class="n">distribution</span> <span class="o">=</span> <span class="n">frozen</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">distribution</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>array([2, 3, 2, 3, 1, 3, 2, 1, 1, 3, 2, 2, 4, 1, 2, 2, 1, 2, 2, 2, 2, 1,
+       3, 0, 0, 4, 3, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 0, 1, 1, 0, 1, 2, 2,
+       2, 2, 1, 3, 3, 1, 1, 3, 2, 4, 1, 2, 1, 0, 3, 1, 2, 2, 2, 1, 1, 1,
+       1, 2, 2, 1, 3, 1, 2, 1, 1, 3, 3, 3, 1, 0, 2, 1, 2, 1, 1, 0, 2, 3,
+       3, 1, 3, 3, 1, 0, 2, 2, 2, 2, 2, 1, 2, 1, 1, 0, 0, 3, 2, 1, 1, 1,
+       4, 1, 1, 3, 2, 2, 2, 1, 1, 2, 1, 1, 1, 2, 2, 2, 0, 1, 0, 1, 1, 2,
+       3, 1, 1, 1, 2, 3, 1, 2, 2, 2, 1, 2, 3, 3, 1, 2, 3, 2, 3, 3, 2, 2,
+       1, 4, 1, 2, 1, 3, 2, 2, 4, 0, 4, 1, 2, 2, 0, 2, 2, 1, 2, 1, 3, 1,
+       3, 1, 2, 2, 2, 3, 2, 1, 1, 2, 1, 0, 0, 0, 1, 0, 5, 2, 3, 2, 2, 1,
+       0, 1, 1, 1, 0, 2, 2, 2, 2, 1, 2, 0, 2, 2, 1, 0, 1, 0, 2, 2, 2, 2,
+       1, 1, 1, 1, 3, 3, 2, 2, 3, 2, 0, 3, 0, 2, 3, 1, 2, 0, 1, 2, 0, 2,
+       2, 4, 1, 3, 2, 2, 1, 4, 2, 2, 2, 3, 2, 1, 0, 0, 1, 3, 4, 2, 1, 1,
+       2, 0, 0, 2, 2, 1, 4, 2, 0, 2, 3, 1, 1, 1, 1, 1, 2, 1, 2, 2, 4, 2,
+       3, 1, 2, 1, 2, 2, 2, 0, 1, 2, 1, 1, 1, 2, 1, 3, 3, 1, 1, 0, 2, 2,
+       2, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 2, 0, 4, 1, 1, 3, 3, 1, 3, 2,
+       1, 1, 2, 1, 0, 0, 1, 1, 2, 0, 0, 1, 2, 2, 2, 0, 2, 0, 1, 3, 1, 1,
+       1, 0, 0, 3, 3, 1, 1, 1, 3, 2, 1, 1, 2, 2, 1, 3, 2, 2, 4, 4, 1, 0,
+       1, 3, 2, 2, 3, 2, 2, 0, 1, 2, 2, 2, 1, 2, 0, 4, 1, 2, 3, 1, 1, 0,
+       1, 0, 1, 0, 0, 2, 2, 0, 3, 2, 0, 2, 1, 1, 1, 2, 2, 2, 2, 0, 2, 3,
+       3, 1, 3, 2, 1, 3, 2, 2, 1, 4, 2, 0, 2, 2, 1, 1, 3, 1, 1, 1, 1, 3,
+       3, 2, 1, 1, 2, 2, 1, 2, 1, 3, 2, 3, 1, 1, 2, 1, 2, 1, 0, 2, 3, 3,
+       0, 3, 2, 1, 1, 1, 3, 2, 3, 0, 3, 1, 2, 0, 2, 1, 0, 1, 2, 3, 1, 1,
+       2, 1, 1, 2, 3, 1, 3, 2, 2, 3, 1, 1, 2, 1, 2, 0, 0, 3, 0, 2, 2, 2,
+       2, 2, 2, 2, 0, 1, 1, 3, 1, 2, 2, 2, 2, 1, 0, 1, 3, 3, 1, 3, 1, 4,
+       3, 2, 2, 1, 1, 1, 3, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 0, 1, 0, 2, 2,
+       1, 2, 2, 2, 3, 2, 4, 1, 3, 2, 1, 1, 0, 2, 2, 1, 0, 3, 1, 2, 2, 2,
+       3, 3, 1, 3, 4, 2, 4, 1, 0, 3, 4, 1, 1, 1, 1, 1, 1, 3, 2, 0, 2, 3,
+       0, 2, 1, 3, 0, 3, 1, 3, 2, 0, 2, 2, 1, 5, 2, 3, 2, 0, 1, 2, 3, 2,
+       2, 4, 4, 2, 2, 3, 3, 2, 2, 0, 2, 3, 4, 1, 1, 3, 1, 1, 2, 0, 1, 1,
+       2, 4, 3, 2, 2, 2, 1, 2, 2, 2, 3, 1, 1, 3, 3, 3, 1, 1, 2, 2, 1, 1,
+       3, 2, 3, 3, 2, 4, 1, 2, 2, 3, 1, 1, 1, 3, 1, 0, 0, 4, 1, 3, 4, 3,
+       2, 3, 0, 3, 1, 2, 1, 2, 1, 1, 2, 1, 2, 1, 2, 3, 2, 1, 3, 2, 2, 2,
+       4, 3, 2, 1, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 1, 0, 1, 2, 2,
+       2, 0, 3, 2, 2, 2, 1, 3, 1, 2, 3, 1, 2, 3, 1, 1, 2, 1, 2, 2, 1, 2,
+       1, 3, 1, 3, 1, 1, 4, 2, 2, 1, 2, 0, 1, 0, 2, 1, 1, 0, 1, 0, 2, 1,
+       2, 1, 0, 2, 2, 2, 0, 1, 1, 1, 1, 4, 2, 0, 0, 2, 1, 1, 2, 1, 3, 1,
+       3, 2, 0, 2, 2, 2, 2, 2, 2, 0, 2, 2, 1, 2, 4, 1, 0, 2, 0, 2, 4, 2,
+       1, 1, 2, 1, 2, 2, 3, 0, 2, 2, 1, 2, 0, 0, 1, 0, 2, 2, 1, 3, 1, 1,
+       2, 3, 3, 2, 1, 0, 1, 2, 4, 4, 5, 2, 0, 1, 1, 2, 2, 3, 1, 0, 3, 2,
+       0, 1, 3, 0, 0, 2, 1, 2, 1, 2, 2, 1, 4, 1, 2, 2, 0, 1, 4, 1, 3, 2,
+       3, 2, 1, 3, 0, 1, 3, 2, 1, 1, 1, 1, 1, 2, 3, 4, 1, 2, 1, 2, 0, 2,
+       2, 2, 2, 1, 3, 1, 3, 1, 2, 1, 2, 2, 4, 1, 3, 2, 2, 0, 2, 0, 2, 0,
+       1, 2, 1, 1, 1, 0, 2, 1, 1, 0, 1, 1, 3, 4, 3, 1, 1, 1, 2, 1, 3, 2,
+       2, 2, 2, 2, 5, 3, 2, 2, 3, 1, 4, 3, 2, 3, 0, 3, 3, 0, 2, 1, 0, 3,
+       1, 2, 2, 1, 2, 0, 1, 3, 0, 3, 2, 1, 1, 1, 3, 2, 1, 2, 1, 4, 2, 1,
+       1, 1, 1, 1, 2, 3, 0, 2, 2, 3])
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">df0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Distribution&#39;</span><span class="p">:</span><span class="n">distribution</span><span class="p">})</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">df0</span><span class="p">[</span><span class="s1">&#39;Distribution&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Probabilty&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Distribution&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">df1</span><span class="p">[</span><span class="s1">&#39;Distribution&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="c1">#df1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span><span class="n">headers</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span> <span class="o">=</span> <span class="s1">&#39;pretty&#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>+---+-------+--------------+------------+
+|   | index | Distribution | Probabilty |
++---+-------+--------------+------------+
+| 0 |  0.0  |    117.0     |   0.117    |
+| 1 |  1.0  |    326.0     |   0.326    |
+| 2 |  2.0  |    351.0     |   0.351    |
+| 3 |  3.0  |    159.0     |   0.159    |
+| 4 |  4.0  |     43.0     |   0.043    |
+| 5 |  5.0  |     4.0      |   0.004    |
++---+-------+--------------+------------+
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df1</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Distribution&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Figure 4: Simulated Distribtion&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df1</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;Probabilty&#39;</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Figure 5: Simulated Probabilty Distribtion&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p><img alt="png" src="images/BinomialDistributionWithPython/BinomialDistributionWithPython_20_0.png"></p>
+<p>From Figure 4 and 5, the simulation is showing that out of a 1000 experiments, exactly 3 reds are showing 159 times with a probabilty of 0.159. From Figure 1, this is about 0.165.</p>
+<p>Now lets explore the probability of red and green marbles.</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">binomial_probabilty_green</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">binomial_probabilty_red</span> <span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">green_cdf</span><span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">red_cdf</span><span class="o">=</span> <span class="n">binom</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">binomial_probabilty_green</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">binomial_probabilty_red</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">green_cdf</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">red_cdf</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>range(0, 6)
+[0.00411523 0.04115226 0.16460905 0.32921811 0.32921811 0.13168724]
+[0.13168724 0.32921811 0.32921811 0.16460905 0.04115226 0.00411523]
+[0.00411523 0.04526749 0.20987654 0.53909465 0.86831276 1.        ]
+[0.13168724 0.46090535 0.79012346 0.95473251 0.99588477 1.        ]
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;Prob_Green&#39;</span><span class="p">:</span><span class="n">binomial_probabilty_green</span><span class="p">,</span> 
+                    <span class="s1">&#39;Prob_Red&#39;</span><span class="p">:</span><span class="n">binomial_probabilty_red</span><span class="p">,</span>
+                    <span class="s1">&#39;Green_cdf&#39;</span><span class="p">:</span><span class="n">green_cdf</span><span class="p">,</span>
+                    <span class="s1">&#39;Red_cdf&#39;</span><span class="p">:</span><span class="n">red_cdf</span>
+                   <span class="p">})</span>
+<span class="c1">#df2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span><span class="n">headers</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span> <span class="o">=</span> <span class="s1">&#39;pretty&#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>+---+-----+----------------------+-----------------------+----------------------+---------------------+
+|   |  x  |      Prob_Green      |       Prob_Red        |      Green_cdf       |       Red_cdf       |
++---+-----+----------------------+-----------------------+----------------------+---------------------+
+| 0 | 0.0 | 0.004115226337448564 |  0.13168724279835395  | 0.004115226337448562 | 0.13168724279835398 |
+| 1 | 1.0 | 0.04115226337448562  |  0.3292181069958847   | 0.04526748971193418  | 0.4609053497942387  |
+| 2 | 2.0 | 0.16460905349794241  |  0.3292181069958847   |  0.2098765432098766  | 0.7901234567901236  |
+| 3 | 3.0 |  0.3292181069958847  |  0.16460905349794233  |  0.5390946502057614  | 0.9547325102880659  |
+| 4 | 4.0 | 0.32921810699588466  | 0.041152263374485576  |  0.8683127572016461  | 0.9958847736625515  |
+| 5 | 5.0 | 0.13168724279835387  | 0.0041152263374485566 |         1.0          |         1.0         |
++---+-----+----------------------+-----------------------+----------------------+---------------------+
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Prob_Green&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Figure 6 : Probabilty distribution </span><span class="se">\n</span><span class="s1"> for Green Marbles&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Prob_Red&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Figure 7 : Probabilty distribution </span><span class="se">\n</span><span class="s1"> for Red Marbles&#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Green_cdf&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Figure 8 : Cumulative Density for </span><span class="se">\n</span><span class="s1"> Green Marbles &#39;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Red_cdf&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Figure 9 : Cumulative Density for </span><span class="se">\n</span><span class="s1"> Red Marbles &#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<p><img alt="png" src="images/BinomialDistributionWithPython/BinomialDistributionWithPython_25_0.png"></p>
+<p>From Figure 6, it is evident that higher probabilty of getting 3, 4 of 5 green marbles. From Figure 8, getting 2 greens or less occur approximately 20% of the time and 80% of the time it is 3 or more.</p>
+<p>From Figure 9, getting 2 or less is approximately 80%. </p>
+<p>There is higher probabilty of getting zero reds in 5 tries because there is one one red in the bag. Getting zero red in 5 tries means getting 5 green marbles. Therefore the sample space would be {GGGGG}.</p>
+<p>P(GGGGG) = 2/3 * 2/3 * 2/3 * 2/3 * 2/3 = 0.1617 ~ probabilty of zero reds or all greens</p>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+  </ul>
+  
+
+
+<h4>Tags</h4>
+	<ul class="blank">
+	    <li class="tag-4"><a href="/tag/norm.html">norm</a></li>
+	    <li class="tag-4"><a href="/tag/binom.html">binom</a></li>
+	    <li class="tag-4"><a href="/tag/normal-distribiution.html">Normal Distribiution</a></li>
+	    <li class="tag-1"><a href="/tag/python.html">Python</a></li>
+	    <li class="tag-4"><a href="/tag/binomial-distribiution.html">Binomial Distribiution</a></li>
+</ul>
+   
+
+
+
+    
+
+    
+   
+        
+
+
+
+<h4>Recent Post</h4>
+    <ul id="recent-posts" class="blank">
+        <li>
+          <a href="/normal-distribution-with-python.html">Normal Distribution with Python</a>
+        </li>
+        <li>
+          <a href="/binomial-distribution-with-python.html">Binomial Distribution with Python</a>
+        </li>
+    </ul>
+
+
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="/theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="/theme/js/libs/gumby.min.js"></script>
+  <script src="/theme/js/plugins.js"></script>
+</body>
+</html>
